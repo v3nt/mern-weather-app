@@ -11,9 +11,17 @@ import {
 import axios from "axios";
 
 class WeatherForm extends Component {
+  // default state values
+  state = {
+    tempMetric: "imperial",
+    zipCodeInput: "98052",
+  };
+
   componentDidMount() {
     this.refreshSavedWeather();
   }
+
+  // Refreshes the current weather data for the most recent zip code, if it exists
   refreshSavedWeather = () => {
     if (localStorage.getItem("zipCode")) {
       axios
@@ -27,19 +35,12 @@ class WeatherForm extends Component {
     }
   };
 
-  // default state values
-  state = {
-    tempMetric: "imperial",
-    zipCodeInput: "98052",
-  };
-
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   saveFormData = (event) => {
     event.preventDefault();
-
     // Gets the weather data from the weather api and returns it to save into local storage and redux store.
     axios
       .post("/api/weather", {
@@ -58,11 +59,26 @@ class WeatherForm extends Component {
     localStorage.setItem("zipCode", this.state.zipCodeInput);
     localStorage.setItem("tempMetric", this.state.tempMetric);
     localStorage.setItem("CurrentWeatherData", JSON.stringify(weatherData));
+    this.saveToMongo(weatherData);
+  };
+
+  saveToMongo = (event) => {
+    event.preventDefault();
+    axios
+      .post("/api/weatherMongo", {
+        zipCode: this.state.zipCodeInput,
+        tempMetric: this.state.tempMetric,
+      })
+      .then((response) => {
+        let weatherData = response.data;
+
+        // do whatever you want with the weather data
+      });
   };
 
   render() {
     return (
-      <Form className="weather-form" onSubmit={this.saveToLocalStorage}>
+      <Form className="weather-form" onSubmit={this.saveToMongo}>
         <Row type="flex" justify="center" align="center" className="zipCode">
           <Col>
             <span>Zip Code: </span>

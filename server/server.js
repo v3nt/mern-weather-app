@@ -1,4 +1,5 @@
 require("dotenv").config();
+var cors = require("cors");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -7,6 +8,8 @@ const mongoose = require("mongoose");
 //
 const app = express();
 const port = process.env.PORT ? process.env.PORT : 5000;
+
+app.use(cors());
 
 //use body parser to get data from POST requests
 app.use(bodyParser.json());
