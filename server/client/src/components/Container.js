@@ -9,7 +9,7 @@ const Container = () => {
   return (
     <section className="weather container">
       <WeatherForm />
-      <WeatherPanels weatherData={weatherData} />
+      {/* <WeatherPanels weatherData={weatherData} /> */}
     </section>
   );
 };
