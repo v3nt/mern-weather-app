@@ -24,4 +24,26 @@ router.post("/weather", async (res, req) => {
   res.send(JSON.stringify(weatherData, null, 4));
 });
 
+// POST Request - get the weather data from the api, save it to mongo, then return the data back
+router.post("/weatherMongo", async (req, res) => {
+  const { zipCode, tempMetric } = req.body;
+  let weather = new Weather();
+  let weatherData = await weather.getWeatherData(zipCode, tempMetric);
+
+  await weather.saveWeatherDataToMongo(zipCode, weatherData);
+  res.header("Content-Type", "application/json");
+  res.send(JSON.stringify(weatherData, null, 4));
+});
+
+// GET Request - get the weather data saved from Mongo
+// http://localhost:5000/api/weatherMongo?zipCode=98052
+router.get("/weatherMongo", async (req, res) => {
+  const { zipCode } = req.query;
+  let weather = new Weather();
+
+  let weatherData = await weather.getWeatherData(zipCode);
+  res.header("Content-Type", "application/json");
+  res.send(JSON.stringify(weatherData, null, 4));
+});
+
 module.exports = router;
