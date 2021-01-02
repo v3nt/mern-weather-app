@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT ? process.env.PORT : 5000;
 
 //use body parser to get data from POST requests
 app.use(bodyParser.json());
