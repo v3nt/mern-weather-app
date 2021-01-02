@@ -30,3 +30,4 @@ yarn-error.log*
 # visual studios configurations
 .vs
 server/client/.eslintcache
+package-lock.json
