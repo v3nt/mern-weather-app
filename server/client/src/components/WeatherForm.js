@@ -8,7 +8,25 @@ import {
   ToggleButton,
 } from "react-bootstrap";
 
+import axios from "axios";
+
 class WeatherForm extends Component {
+  componentDidMount() {
+    this.refreshSavedWeather();
+  }
+  refreshSavedWeather = () => {
+    if (localStorage.getItem("zipCode")) {
+      axios
+        .post("/api/weather", {
+          zipCode: localStorage.getItem("zipCode"),
+          tempMetric: localStorage.getItem("tempMetric"),
+        })
+        .then((d) => {
+          localStorage.setItem("CurrentWeatherData", JSON.stringify(d.data));
+        });
+    }
+  };
+
   // default state values
   state = {
     tempMetric: "imperial",
@@ -19,9 +37,32 @@ class WeatherForm extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  saveFormData = (event) => {
+    event.preventDefault();
+
+    // Gets the weather data from the weather api and returns it to save into local storage and redux store.
+    axios
+      .post("/api/weather", {
+        zipCode: this.state.zipCodeInput,
+        tempMetric: this.state.tempMetric,
+      })
+      .then((response) => {
+        let weatherData = response.data;
+
+        this.saveToLocalStorage(weatherData);
+      });
+  };
+
+  // Save data from form to local storage
+  saveToLocalStorage = (weatherData) => {
+    localStorage.setItem("zipCode", this.state.zipCodeInput);
+    localStorage.setItem("tempMetric", this.state.tempMetric);
+    localStorage.setItem("CurrentWeatherData", JSON.stringify(weatherData));
+  };
+
   render() {
     return (
-      <Form className="weather-form">
+      <Form className="weather-form" onSubmit={this.saveToLocalStorage}>
         <Row type="flex" justify="center" align="center" className="zipCode">
           <Col>
             <span>Zip Code: </span>
