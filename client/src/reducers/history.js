@@ -24,6 +24,8 @@ const history = (state = getHistoryFromLocal(), action) => {
   switch (action.type) {
     case "UPDATE_HISTORY":
       return getUpdatedHistory(state, action.payload);
+    case "DB_HISTORY":
+      return getHistoryFromMongoose(state, action.payload);
     default:
       return state;
   }
