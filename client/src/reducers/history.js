@@ -11,6 +11,7 @@ let getHistoryFromMongoose = () => {
 
 // Maintain a history list of queried weather data of 10
 let getUpdatedHistory = (history, value) => {
+  console.log(history, value);
   let updateList = [...history];
   if (updateList.length >= 10) {
     updateList.shift();

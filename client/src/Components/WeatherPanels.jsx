@@ -4,7 +4,7 @@ import WeatherHistoryPanel from "./WeatherHistoryPanel";
 
 class WeatherPanels extends Component {
     render() {
-        return (
+            return (
             <section className="weather-panels">
                 <WeatherInfoPanel/>
                 <WeatherHistoryPanel/>
