@@ -56,8 +56,8 @@ router.get("/weatherMongoAll", async (req, res) => {
   let weather = new Weather();
 
   let weatherData = await weather.getWeatherDataFromMongoAll();
-  console.log(weatherData);
-  //   res.header("Content-Type", "application/json");
+
+  res.header("Content-Type", "application/json");
   res.send(JSON.stringify(weatherData, null, 4));
 });
 

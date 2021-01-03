@@ -37,7 +37,7 @@ class Weather {
   };
 
   getWeatherDataFromMongoAll = async () => {
-    return WEATHER.find({});
+    return WEATHER.find().limit(4);
   };
 
   /**
